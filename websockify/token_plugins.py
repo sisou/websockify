@@ -9,6 +9,35 @@ class BasePlugin(object):
     def lookup(self, token):
         return None
 
+class ElectrumTcpPlugin(BasePlugin):
+    def lookup(self, token):
+        splitToken = token.split(':')
+        network = splitToken[0]
+        host = ''
+        if len(splitToken) == 1:
+            host = 'electrum.blockstream.info' # default
+        else:
+            host = splitToken[1]
+
+        if network == 'mainnet':
+            return [host, 50001]
+        else:
+            return [host, 60001]
+
+class ElectrumSslPlugin(BasePlugin):
+    def lookup(self, token):
+        splitToken = token.split(':')
+        network = splitToken[0]
+        host = ''
+        if len(splitToken) == 1:
+            host = 'electrum.blockstream.info' # default
+        else:
+            host = splitToken[1]
+
+        if network == 'mainnet':
+            return [host, 50002]
+        else:
+            return [host, 60002]
 
 class ReadOnlyTokenFile(BasePlugin):
     # source is a token file with lines like
